@@ -2,7 +2,7 @@
 
 using namespace eosio;
 
-class [[eosio::contract("coupon_contract")]] test : public eosio::contract
+class [[eosio::contract("coupon_contract")]] coupon_contract : public eosio::contract
 {
 
 public:
@@ -10,19 +10,19 @@ public:
 	using contract::contract;
 
 	/* COSTRUTTORE DEL CONTRATTO */
-	coupon_contract(name receiver, name code, datastream<const char*> ds):contract(receiver, code, ds) {}
+	coupon_contract(name receiver, name code, datastream<const char*> ds): contract(receiver, code, ds) {}
 
 	/* IMPLEMENTAZIONI DELLE ACTION */
 
 	/* INSERIMENTO COUPON */
 	[[eosio::action]]
-	void add_coupon(int coupon_id, std::string pub_id, std::string beerlover_id, int value, std::string exp_date)
+	void addcoupon(int coupon_id, std::string pub_id, std::string beerlover_id, int value, std::string exp_date)
 	{
 		coupon_index coupons(get_self(), get_first_receiver().value);
 
 		// verifica dell'esistenza del coupon nella tabella
 		auto c_itr = coupons.find(coupon_id);
-		eosio_assert( c_itr != coupons.end() ,"Coupon già presente nel sistema!");
+		check( c_itr != coupons.end() ,"Coupon già presente nel sistema!");
 
 		// verifica della correttezza del campo value del coupon
 		if( value<100 && value>0 ){
@@ -30,7 +30,7 @@ public:
 			// inserimento del record nella tebella
 			coupons.emplace(_self, [&](auto& row) {
 				row.coupon_id = coupon_id;
-				row.pub_id = user_id;
+				row.pub_id = pub_id;
 				row.beerlover_id = beerlover_id;
 				row.value = value;
 				row.exp_date = exp_date;
@@ -38,20 +38,20 @@ public:
 
 		} else {
 			// errore nel caso di value errata
-			eosio_assert( 1 , "Il valore del Coupon è errato!" );
+			check( 1 , "Il valore del Coupon è errato!" );
 		}	
 	}
 
 
 	/* INSERIMENTO REWARD */
 	[[eosio::action]]
-	void add_reward(int reward_id, std::string hash)
+	void addreward(int reward_id, std::string hash)
 	{
 		reward_index rewards(get_self(), get_first_receiver().value);
 
 		// verifica dell'esistenza del reward nella tabella
 		auto r_itr = rewards.find(reward_id);
-		eosio_assert( r_itr != rewards.end() ,"Il Reward di questo Coupon è già presente nel sistema!");
+		check( r_itr != rewards.end() ,"Il Reward di questo Coupon è già presente nel sistema!");
 
 		// inserimento del record all'interno della tabella
 		rewards.emplace(_self, [&](auto& row){
@@ -62,7 +62,7 @@ public:
 
 	/* CANCELLAZIONE COUPON */
 	[[eosio::action]]
-	void erase_coupon(int coupon_id)
+	void erasecoupon(int coupon_id)
 	{
 		coupon_index coupons(get_self(), get_first_receiver().value);
 		
@@ -70,15 +70,15 @@ public:
 		auto c_itr = coupons.find(coupon_id);
 
 		// il record non esiste
-		eosio_assert( c_itr != coupons.end() ,"Il Coupon non esiste!");
+		check( c_itr != coupons.end() ,"Il Coupon non esiste!");
 
 		// eliminazione del record
-		coupons.erase(iterator);
+		coupons.erase(c_itr);
 	}
 
 	/* CANCELLAZIONE REWARD */
 	[[eosio::action]]
-	void erase_reward(int coupon_id)
+	void erasereward(int reward_id)
 	{
 		reward_index rewards(get_self(), get_first_receiver().value);
 		
@@ -86,10 +86,10 @@ public:
 		auto r_itr = rewards.find(reward_id);
 
 		// il record non esiste
-		eosio_assert( r_itr != rewards.end() ,"Il Coupon non esiste!");
+		check( r_itr != rewards.end() ,"Il Coupon non esiste!");
 
 		// eliminazione del record
-		coupons.erase(iterator);
+		rewards.erase(r_itr);
 	}
 
 
@@ -115,9 +115,11 @@ private:
 	struct reward {
 		int reward_id;
 		std::string hash;
+
+		int primary_key() const{ return reward_id;}
 	};
 
 	// tabella dei rewards
 	using reward_index = eosio::multi_index<"rewards"_n, reward>;
 
-}
+};
