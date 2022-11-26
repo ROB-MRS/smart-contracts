@@ -14,7 +14,7 @@ public:
 
 	/* IMPLEMENTAZIONI DELLE ACTION */
 
-	// inserimento coupon
+	/* INSERIMENTO COUPON */
 	[[eosio::action]]
 	void add_coupon(int coupon_id, std::string pub_id, std::string beerlover_id, int value, std::string exp_date)
 	{
@@ -43,7 +43,7 @@ public:
 	}
 
 
-	// inserimento reward
+	/* INSERIMENTO REWARD */
 	[[eosio::action]]
 	void add_reward(int reward_id, std::string hash)
 	{
@@ -60,7 +60,7 @@ public:
 		});
 	}
 
-	// cancellazione di un coupon
+	/* CANCELLAZIONE COUPON */
 	[[eosio::action]]
 	void erase_coupon(int coupon_id)
 	{
@@ -76,7 +76,7 @@ public:
 		coupons.erase(iterator);
 	}
 
-	// cancellazione di un reward
+	/* CANCELLAZIONE REWARD */
 	[[eosio::action]]
 	void erase_reward(int coupon_id)
 	{
