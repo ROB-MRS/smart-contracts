@@ -1,0 +1,94 @@
+{
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT ",
+    "version": "eosio::abi/1.2",
+    "types": [],
+    "structs": [
+        {
+            "name": "addcoupon",
+            "base": "",
+            "fields": [
+                {
+                    "name": "coupon_id",
+                    "type": "int32"
+                },
+                {
+                    "name": "pub_id",
+                    "type": "string"
+                },
+                {
+                    "name": "beerlover_id",
+                    "type": "string"
+                },
+                {
+                    "name": "value",
+                    "type": "int32"
+                },
+                {
+                    "name": "exp_date",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "addreward",
+            "base": "",
+            "fields": [
+                {
+                    "name": "reward_id",
+                    "type": "int32"
+                },
+                {
+                    "name": "hash",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "erasecoupon",
+            "base": "",
+            "fields": [
+                {
+                    "name": "coupon_id",
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "name": "erasereward",
+            "base": "",
+            "fields": [
+                {
+                    "name": "reward_id",
+                    "type": "int32"
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "name": "addcoupon",
+            "type": "addcoupon",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "addreward",
+            "type": "addreward",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "erasecoupon",
+            "type": "erasecoupon",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "erasereward",
+            "type": "erasereward",
+            "ricardian_contract": ""
+        }
+    ],
+    "tables": [],
+    "kv_tables": {},
+    "ricardian_clauses": [],
+    "variants": [],
+    "action_results": []
+}
