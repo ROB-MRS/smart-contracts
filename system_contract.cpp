@@ -22,10 +22,10 @@ class [[eosio::contract("system_contract")]] system_contract : public eosio::con
 
 			// verifica dell'esistenza del coupon nella tabella
 			auto c_itr = coupons.find(coupon_id);
-			check( c_itr != coupons.end() ,"Coupon gia' presente nel sistema!");
+			check( c_itr == coupons.end() ,"Coupon gia' presente nel sistema!");
 
 			// verifica della correttezza del campo value del coupon
-			if( value<100 && value>0 ){
+			check( (value<100 && value>0) , "Il valore del Coupon e' inammissibile!" );
 
 				// inserimento del record nella tebella
 				coupons.emplace(_self, [&](auto& row) {
@@ -36,10 +36,6 @@ class [[eosio::contract("system_contract")]] system_contract : public eosio::con
 					row.exp_date = exp_date;
 				});
 
-			} else {
-				// errore nel caso di value errata
-				check( 1 , "Il valore del Coupon e' errato!" );
-			}	
 		}
 
 
@@ -51,7 +47,7 @@ class [[eosio::contract("system_contract")]] system_contract : public eosio::con
 
 			// verifica dell'esistenza del reward nella tabella
 			auto r_itr = rewards.find(reward_id);
-			check( r_itr != rewards.end() ,"Il Reward di questo Coupon e' gia' presente nel sistema!");
+			check( r_itr == rewards.end() ,"Il Reward di questo Coupon e' gia' presente nel sistema!");
 
 			// inserimento del record all'interno della tabella
 			rewards.emplace(_self, [&](auto& row){
